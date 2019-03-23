@@ -68,9 +68,9 @@ class Market(object):
         if item in self.grouped:
             if self.grouped[item]['amount'] > amount:
                 self.grouped[item]['amount'] -= amount
-                self.grouped[item]['total_price'] = 0
                 self.calculate_item(item)
-            del self.grouped[item]
+            else:
+                del self.grouped[item]
 
     @staticmethod
     def get_price_index(amount, pricelist):
@@ -145,4 +145,5 @@ def checkout(skus):
     """Get value for shopping."""
     market = Market()
     return market.checkout(skus)
+
 
