@@ -6,4 +6,3 @@ def test_checkout():
     assert checkout('AAAA') == 180
     assert checkout('ABAB') == 145
     assert checkout('AB') == 80
-

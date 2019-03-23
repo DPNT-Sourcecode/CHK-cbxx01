@@ -21,9 +21,13 @@ def check_input(skus):
     :returns: True for validated else False.
     """
 
+    if not isinstance(skus, str):
+        return False
+
     for item in skus:
         if item not in stock:
             return False
+
     return True
 
 
@@ -64,10 +68,3 @@ def checkout(skus):
         value += calculate_items(items)
 
     return value
-
-
-
-
-
-
-
