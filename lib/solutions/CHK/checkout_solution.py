@@ -6,6 +6,9 @@ def checkout(skus):
     """Supermarket checkout.
 
     :param skus: Stock Keeping Units
-    :returns:
+    :returns: the total price of a number of items
     """
+
+    return
+
 
