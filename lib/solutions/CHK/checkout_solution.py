@@ -106,14 +106,14 @@ class Market(object):
         item, amount = items
 
         pricelist = stock[item]
-        pricelist_promo_items = None
         price = pricelist[PRICES][0]
 
         amount, promo_price = self.get_promo_price(amount, pricelist)
         total_price = amount * price + promo_price
 
-        if pricelist_promo_items:
-            for pricelist_promo_item, promo_amount in pricelist_promo_items:
+        # print(self.pricelist_promo_items)
+        if self.pricelist_promo_items:
+            for pricelist_promo_item, promo_amount in self.pricelist_promo_items:
                 total_price -= self.get_promo_items(pricelist_promo_item, promo_amount)
 
         return total_price
@@ -134,6 +134,7 @@ class Market(object):
         self.grouped = [(k, sum(1 for _ in g)) for k, g in itertools.groupby(self.skus)]
 
         for items in self.grouped:
+            print(items)
             value += self.calculate_items(items)
 
         return value
@@ -143,5 +144,6 @@ def checkout(skus):
     """Get value for shopping."""
     market = Market(skus)
     return market.checkout()
+
 
 
