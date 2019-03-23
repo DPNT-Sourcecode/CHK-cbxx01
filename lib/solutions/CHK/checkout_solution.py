@@ -6,8 +6,8 @@ import itertools
 stock = {
     'A': (50, 3, 130),
     'B': (30, 2, 45),
-    'C': (20),
-    'D': (15),
+    'C': (20,),
+    'D': (15,),
 }
 
 PRICE = 0
@@ -42,7 +42,6 @@ def calculate_items(items):
     promo_price = 0
 
     if len(stock[item]) == 3:  # calculate special price
-        print(stock[item])
         promo_amount = int(amount / stock[item][PROMO_AMOUNT])
         amount = amount % stock[item][PROMO_AMOUNT]
         promo_price = promo_amount * stock[item][PROMO_PRICE]
@@ -69,4 +68,5 @@ def checkout(skus):
         value += calculate_items(items)
 
     return value
+
 
