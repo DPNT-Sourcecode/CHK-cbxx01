@@ -101,9 +101,3 @@ def checkout(skus):
         value += calculate_items(items)
 
     return value
-
-
-
-
-
-
