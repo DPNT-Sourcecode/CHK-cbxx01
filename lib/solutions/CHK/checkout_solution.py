@@ -30,9 +30,11 @@ stock = {
     ],
 }
 
-PRICE = 0
-PROMO_AMOUNT = 1
-PROMO_PRICE = 2
+AMOUNT = 0
+PRICE = 2
+
+EXTRA_PRICE = 0
+EXTRA_ITEM = 1
 
 
 def check_input(skus):
@@ -58,10 +60,15 @@ def calculate_items(items):
     :returns: total value for item
     """
 
-    amounts, prices = items
+    amount, item = items
+
+    pricelist = stock[item]
+    price = pricelist[PRICE][0]
+
+    promo_amount = filter((amount).__le__, pricelist[0])
     promo_price = 0
 
-    if len(stock[item]) == 3:  # calculate special price
+    if len(pricelist[0]) == 3:  # calculate special price
         promo_amount = int(amount / stock[item][PROMO_AMOUNT])
         amount = amount % stock[item][PROMO_AMOUNT]
         promo_price = promo_amount * stock[item][PROMO_PRICE]
@@ -88,4 +95,5 @@ def checkout(skus):
         value += calculate_items(items)
 
     return value
+
 
