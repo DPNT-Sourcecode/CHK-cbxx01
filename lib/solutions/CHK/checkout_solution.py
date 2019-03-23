@@ -1,7 +1,7 @@
-
-
 # noinspection PyUnusedLocal
 # skus = unicode string
+
+import itertools
 
 stock = {
     'A': (50, 3, 130),
@@ -39,10 +39,11 @@ def checkout(skus):
     value = 0
     skus.sort()
 
-    item = ''
+    [list(grp) for k, grp in groupby(
     for item in skus:
         value += calculate_item(item)
 
     return value
+
 
 
