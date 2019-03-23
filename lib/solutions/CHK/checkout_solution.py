@@ -11,6 +11,17 @@ stock = {
 }
 
 
+def check_input(skus):
+    """Validate input.
+
+    :returns: True for validated else False.
+    """
+    for item in skus:
+        if item not in stock:
+            return False
+    return True
+
+
 def calculate_item(item):
     """Calculate summary value for kind of item."""
 
@@ -22,11 +33,16 @@ def checkout(skus):
     :returns: the total price of a number of items
     """
 
-    skus.sort()
+    if not check_input(skus):
+        return -1
 
     value = 0
+    skus.sort()
+
+    item = ''
     for item in skus:
         value += calculate_item(item)
 
     return value
+
 
