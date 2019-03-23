@@ -4,6 +4,10 @@
 import itertools
 
 stock = {
+    # 'item': [
+    #     (amount1, amount2, ...),
+    #     (price1, (price2, extra), ...),
+    # ],
     'A': [
         (1, 3, 5),
         (50, 130, 200),
@@ -22,7 +26,7 @@ stock = {
     ],
     'E': [
         (1, 2),
-        (40, 'B')
+        (40, (40, 'B'))
     ],
 }
 
@@ -54,7 +58,7 @@ def calculate_items(items):
     :returns: total value for item
     """
 
-    item, amount = items
+    amounts, prices = items
     promo_price = 0
 
     if len(stock[item]) == 3:  # calculate special price
@@ -84,3 +88,4 @@ def checkout(skus):
         value += calculate_items(items)
 
     return value
+
