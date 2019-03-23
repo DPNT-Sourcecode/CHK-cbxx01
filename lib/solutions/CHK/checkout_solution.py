@@ -35,13 +35,14 @@ def calculate_items(items):
 
     item = items[0]
     amount = len(item)
-    promo_amount = 0
+    promo_price = 0
 
     if len(stock[item]) == 3:  # calculate special price
-        promo_amount = amount % stock[item][PROMO_AMOUNT]
+        promo_amount = int(amount / stock[item][PROMO_AMOUNT])
+        amount = amount % stock[item][PROMO_AMOUNT]
         promo_price = promo_amount * stock[item][PROMO_PRICE]
 
-    return (amount - promo_amount) * stock[item][PRICE] + promo_price
+    return amount * stock[item][PRICE] + promo_price
 
 
 def checkout(skus):
@@ -55,13 +56,14 @@ def checkout(skus):
         return -1
 
     value = 0
-    skus.sort()
+    skus = sorted(skus)
 
     groupped = [list(grp) for k, grp in itertools.groupby(skus)]
     for items in groupped:
         value += calculate_item(items)
 
     return value
+
 
 
 
