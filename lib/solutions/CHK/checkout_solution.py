@@ -84,6 +84,7 @@ class Market(object):
         idx = self.get_price_index(amount, pricelist)
         pricelist_extra_item = None
         if idx:
+            print('idx', idx)
             pricelist_amount = pricelist[AMOUNTS][idx]
             if isinstance(pricelist[PRICES][idx], (tuple, list)):
                 pricelist_price = pricelist[PRICES][idx][EXTRA_PRICE]
@@ -99,6 +100,7 @@ class Market(object):
                 self.pricelist_extra_items.append((pricelist_extra_item, calculated_amount))
 
             if amount > 0:
+                print(amount, pricelist)
                 price += self.calculate_price(amount, pricelist)
             print(price)
             return price
@@ -137,10 +139,11 @@ class Market(object):
         # for pricelist_promo_item, promo_amount in self.pricelist_extra_items:
         #     self.get_promo_items(pricelist_promo_item, promo_amount)
 
-        return self.total_price
+        return sum([item['total_price'] for item in self.grouped.values()])
 
 
 def checkout(skus):
     """Get value for shopping."""
     market = Market()
     return market.checkout(skus)
+
