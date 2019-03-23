@@ -22,4 +22,3 @@ def test_checkout():
     assert checkout('AAAAAAAAA') == 380
     #  - {"method":"checkout","params":["ABCDEABCDE"],"id":"CHK_R2_038"}, expected: 280, got: 265
     assert checkout('ABCDEABCDE') == 280
-
