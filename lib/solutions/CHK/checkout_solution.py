@@ -26,7 +26,7 @@ stock = {
     ],
     'E': [
         (1, 2),
-        (40, (40, 'B'))
+        (40, (80, 'B'))
     ],
 }
 
@@ -65,15 +65,17 @@ def calculate_items(items):
     pricelist = stock[item]
     price = pricelist[PRICES][0]
 
-    promo_amount = len(filter((amount).__ge__, pricelist[AMOUNTS]))
-    promo_price = 0
+    idx = len(filter((amount).__ge__, pricelist[AMOUNTS])) - 1
 
-    if len(pricelist[0]) == 3:  # calculate special price
-        promo_amount = int(amount / stock[item][PROMO_AMOUNT])
-        amount = amount % stock[item][PROMO_AMOUNT]
-        promo_price = promo_amount * stock[item][PROMO_PRICE]
+    if idx: # calculate special price
+        pricelist_promo_amount = pricelist[AMOUNTS][idx]
+        pricelist_promo_price = pricelist[PRICES][idx]
 
-    return amount * stock[item][PRICE] + promo_price
+        promo_amount = int(amount / pricelist_promo_amount)
+        amount = amount % pricelist_promo_amount
+        promo_price = promo_amount * pricelist_promo_price
+
+    return amount * price + promo_price
 
 
 def checkout(skus):
@@ -95,6 +97,7 @@ def checkout(skus):
         value += calculate_items(items)
 
     return value
+
 
 
 
