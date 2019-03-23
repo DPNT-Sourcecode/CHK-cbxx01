@@ -51,5 +51,10 @@ def test_checkout_UUUU():
     assert checkout('UUUU') == 120
 
 
+def test_checkout_FFFFF():
+    assert checkout('FFFFF') == 20
+
+
 def test_checkout_UUUUUU():
     assert checkout('UUUUUU') == 200
+
