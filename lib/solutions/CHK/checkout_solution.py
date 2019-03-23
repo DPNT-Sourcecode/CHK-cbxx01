@@ -83,28 +83,24 @@ class Market(object):
         """Calculate promotional prices."""
         idx = self.get_price_index(amount, pricelist)
         pricelist_extra_item = None
-        if idx:
-            print('idx', idx)
-            pricelist_amount = pricelist[AMOUNTS][idx]
-            if isinstance(pricelist[PRICES][idx], (tuple, list)):
-                pricelist_price = pricelist[PRICES][idx][EXTRA_PRICE]
-                pricelist_extra_item = pricelist[PRICES][idx][EXTRA_ITEM]
-            else:
-                pricelist_price = pricelist[PRICES][idx]
+        pricelist_amount = pricelist[AMOUNTS][idx]
+        if isinstance(pricelist[PRICES][idx], (tuple, list)):
+            pricelist_price = pricelist[PRICES][idx][EXTRA_PRICE]
+            pricelist_extra_item = pricelist[PRICES][idx][EXTRA_ITEM]
+        else:
+            pricelist_price = pricelist[PRICES][idx]
 
-            calculated_amount = int(amount / pricelist_amount)
-            amount = amount % pricelist_amount
-            price = calculated_amount * pricelist_price
+        calculated_amount = int(amount / pricelist_amount)
+        amount = amount % pricelist_amount
+        price = calculated_amount * pricelist_price
 
-            if pricelist_extra_item:
-                self.pricelist_extra_items.append((pricelist_extra_item, calculated_amount))
+        if pricelist_extra_item:
+            self.pricelist_extra_items.append((pricelist_extra_item, calculated_amount))
 
-            if amount > 0:
-                print(amount, pricelist)
-                price += self.calculate_price(amount, pricelist)
-            print(price)
-            return price
-        return 0
+        if amount > 0:
+            print(amount, pricelist)
+            price += self.calculate_price(amount, pricelist)
+        return price
 
     def calculate_item(self, item, amount):
         """Calculate summary value for kind of item.
@@ -146,4 +142,5 @@ def checkout(skus):
     """Get value for shopping."""
     market = Market()
     return market.checkout(skus)
+
 
