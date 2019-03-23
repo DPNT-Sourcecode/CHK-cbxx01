@@ -14,6 +14,7 @@ PRICE = 0
 PROMO_AMOUNT = 1
 PROMO_PRICE = 2
 
+
 def check_input(skus):
     """Validate input.
 
@@ -33,8 +34,7 @@ def calculate_items(items):
     :returns: total value for item
     """
 
-    item = items[0]
-    amount = items[1]
+    item, amount = items
     promo_price = 0
 
     if len(stock[item]) == 3:  # calculate special price
@@ -63,6 +63,7 @@ def checkout(skus):
         value += calculate_items(items)
 
     return value
+
 
 
 
