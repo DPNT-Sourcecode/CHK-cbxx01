@@ -28,6 +28,10 @@ stock = {
         (1, 2),
         (40, (80, 'B'))
     ],
+    'F': [
+        (1, 3),
+        (10, (30, 'F'))
+    ],
 }
 
 AMOUNTS = 0
@@ -145,5 +149,6 @@ def checkout(skus):
     """Get value for shopping."""
     market = Market()
     return market.checkout(skus)
+
 
 

@@ -31,3 +31,20 @@ def test_checkout_B():
     assert checkout('B') == 30
 
 
+def test_checkout_F():
+    assert checkout('F') == 10
+
+
+def test_checkout_FFF():
+    assert checkout('FFF') == 20
+
+
+def test_checkout_FFFF():
+    assert checkout('FFFF') == 30
+
+
+def test_checkout_FFFFFF():
+    assert checkout('FFFFFF') == 40
+
+
+
