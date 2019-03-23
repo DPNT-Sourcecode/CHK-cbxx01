@@ -2,6 +2,7 @@
 # skus = unicode string
 
 import itertools
+from .stock import GROUP_DISCOUNT
 from .stock import STOCK
 
 AMOUNTS = 0
@@ -88,6 +89,25 @@ class Market(object):
         amount = self.grouped[item]['amount']
         self.grouped[item]['total_price'] = self.calculate_price(amount, pricelist, extra)
 
+    def group_discount(self):
+        """Apply group discount(s)."""
+        # select products
+        discount_amount = GROUP_DISCOUNT['amount']
+        in_discount_items = set(GROUP_DISCOUNT['items'])
+        in_cart_items = self.grouped.keys()
+        to_discount_items = in_discount_items.intersection(in_cart_items)
+
+        # order by price desc
+        amounts = []
+        prices = []
+        for item in to_discount_items:
+            amounts.append(self.grouped[item]['amount'])
+            prices.append(STOCK[item][PRICES][0])
+
+        amount = sum(amounts)
+
+        # recalculate
+
     def checkout(self, skus):
         """Supermarket checkout.
 
@@ -112,6 +132,8 @@ class Market(object):
         for pricelist_extra_item, amount in self.pricelist_extra_items:
             self.get_promo_items(pricelist_extra_item, amount)
 
+        self.group_discount()
+
         return sum([item['total_price'] for item in self.grouped.values()])
 
 
@@ -119,3 +141,4 @@ def checkout(skus):
     """Get value for shopping."""
     market = Market()
     return market.checkout(skus)
+

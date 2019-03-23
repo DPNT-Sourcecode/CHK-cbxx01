@@ -1,5 +1,12 @@
 """Stock data."""
 
+GROUP_DISCOUNT = {
+    'items': ['S', 'T', 'X', 'Y', 'Z'],
+    'amount': 3,
+    'price': 45,
+}
+
+
 STOCK = {
     # 'item': [
     #     (amount1, amount2, ...),
@@ -110,3 +117,4 @@ STOCK = {
         (21,),
     ],
 }
+
