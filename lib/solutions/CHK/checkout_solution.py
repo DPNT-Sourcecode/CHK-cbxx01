@@ -37,67 +37,80 @@ EXTRA_PRICE = 0
 EXTRA_ITEM = 1
 
 
-def check_input(skus):
-    """Validate input.
+class Market(object):
+    """Supermarket."""
 
-    :returns: True for validated else False.
-    """
+    skus = None
 
-    if not isinstance(skus, str):
-        return False
+    def __init__(self, skus):
+        """Set up."""
+        self.skus = skus
 
-    for item in skus:
-        if item not in stock:
+    def check_skus(self):
+        """Validate input.
+
+        :returns: True for validated else False.
+        """
+        if not isinstance(self.skus, str):
             return False
 
-    return True
+        for item in self.skus:
+            if item not in stock:
+                return False
 
+        return True
 
-def calculate_items(items):
-    """Calculate summary value for kind of item.
+    def calculate_items(self, items):
+        """Calculate summary value for kind of item.
 
-    :param items: string of same items
-    :returns: total value for item
-    """
-    item, amount = items
+        :param items: string of same items
+        :returns: total value for item
+        """
+        item, amount = items
 
-    pricelist = stock[item]
-    price = pricelist[PRICES][0]
-    promo_price = 0
+        pricelist = stock[item]
+        price = pricelist[PRICES][0]
+        promo_price = 0
 
-    idx = len(list(filter((amount).__ge__, pricelist[AMOUNTS]))) - 1
+        idx = len(list(filter((amount).__ge__, pricelist[AMOUNTS]))) - 1
 
-    if idx: # calculate special price
-        pricelist_promo_amount = pricelist[AMOUNTS][idx]
-        if isinstance(pricelist[PRICES][idx], (tuple, list)):
-            pricelist_promo_price = pricelist[PRICES][idx][EXTRA_PRICE]
-            pricelist_promo_item = pricelist[PRICES][idx][EXTRA_ITEM]
-        else:
-            pricelist_promo_price = pricelist[PRICES][idx]
+        if idx: # calculate special price
+            pricelist_promo_amount = pricelist[AMOUNTS][idx]
+            if isinstance(pricelist[PRICES][idx], (tuple, list)):
+                pricelist_promo_price = pricelist[PRICES][idx][EXTRA_PRICE]
+                pricelist_promo_item = pricelist[PRICES][idx][EXTRA_ITEM]
+            else:
+                pricelist_promo_price = pricelist[PRICES][idx]
 
-        promo_amount = int(amount / pricelist_promo_amount)
-        amount = amount % pricelist_promo_amount
-        promo_price = promo_amount * pricelist_promo_price
+            promo_amount = int(amount / pricelist_promo_amount)
+            amount = amount % pricelist_promo_amount
+            promo_price = promo_amount * pricelist_promo_price
 
-    return amount * price + promo_price
+        return amount * price + promo_price
+
+    def checkout(self):
+        """Supermarket checkout.
+
+        :param skus: Stock Keeping Units
+        :returns: the total price of a number of items
+        """
+
+        if not self.check_skus():
+            return -1
+
+        value = 0
+        self.skus = sorted(self.skus)
+
+        grouped = [(k, sum(1 for _ in g)) for k, g in itertools.groupby(self.skus)]
+
+        for items in grouped:
+            value += self.calculate_items(items)
+
+        return value
 
 
 def checkout(skus):
-    """Supermarket checkout.
+    """Get value for shopping."""
+    market = Market(skus)
+    return market.checkout()
 
-    :param skus: Stock Keeping Units
-    :returns: the total price of a number of items
-    """
-
-    if not check_input(skus):
-        return -1
-
-    value = 0
-    skus = sorted(skus)
-
-    grouped = [(k, sum(1 for _ in g)) for k, g in itertools.groupby(skus)]
-
-    for items in grouped:
-        value += calculate_items(items)
-
-    return value
