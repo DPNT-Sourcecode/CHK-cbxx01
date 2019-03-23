@@ -69,7 +69,11 @@ def calculate_items(items):
 
     if idx: # calculate special price
         pricelist_promo_amount = pricelist[AMOUNTS][idx]
-        pricelist_promo_price = pricelist[PRICES][idx]
+        if isinstance(pricelist[PRICES][idx], (tuple, list)):
+            pricelist_promo_price = pricelist[PRICES][idx][EXTRA_PRICE]
+            pricelist_promo_item = pricelist[PRICES][idx][EXTRA_ITEM]
+        else:
+            pricelist_promo_price = pricelist[PRICES][idx]
 
         promo_amount = int(amount / pricelist_promo_amount)
         amount = amount % pricelist_promo_amount
@@ -97,6 +101,7 @@ def checkout(skus):
         value += calculate_items(items)
 
     return value
+
 
 
 
