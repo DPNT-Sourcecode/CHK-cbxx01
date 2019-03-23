@@ -106,7 +106,6 @@ class Market(object):
                 prices.append(STOCK[item][PRICES][0])
 
             # order by price desc
-            print(prices, to_discount_items, amounts)
             prices, to_discount_items, amounts = (
                 list(t) for t in zip(*sorted(zip(prices, to_discount_items, amounts)))
             )
@@ -123,10 +122,13 @@ class Market(object):
                 }
 
                 # attach not discounted
+                print(prices, to_discount_items, amounts)
                 for item in to_discount_items:
+                    print(out_discount_amount)
                     if out_discount_amount == 0:
                         del self.grouped[item]
-                    if self.grouped[item]['amount'] < out_discount_amount:
+                    elif self.grouped[item]['amount'] < out_discount_amount:
+                        print('---')
                         out_discount_amount -= self.grouped[item]['amount']
                         self.calculate_item(item)
 
@@ -163,5 +165,6 @@ def checkout(skus):
     """Get value for shopping."""
     market = Market()
     return market.checkout(skus)
+
 
 
