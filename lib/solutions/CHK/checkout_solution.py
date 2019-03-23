@@ -88,9 +88,10 @@ class Market(object):
 
         pricelist_extra_item = None
         pricelist_amount = pricelist[AMOUNTS][idx]
-        if extra and isinstance(pricelist[PRICES][idx], (tuple, list)):
+        if isinstance(pricelist[PRICES][idx], (tuple, list)):
             pricelist_price = pricelist[PRICES][idx][EXTRA_PRICE]
-            pricelist_extra_item = pricelist[PRICES][idx][EXTRA_ITEM]
+            if extra:
+                pricelist_extra_item = pricelist[PRICES][idx][EXTRA_ITEM]
         else:
             pricelist_price = pricelist[PRICES][idx]
 
@@ -114,7 +115,7 @@ class Market(object):
         """
         pricelist = stock[item]
         amount = self.grouped[item]['amount']
-        self.grouped[item]['total_price'] = self.calculate_price(amount, pricelist)
+        self.grouped[item]['total_price'] = self.calculate_price(amount, pricelist, extra)
 
     def checkout(self, skus):
         """Supermarket checkout.
@@ -147,4 +148,5 @@ def checkout(skus):
     """Get value for shopping."""
     market = Market()
     return market.checkout(skus)
+
 
