@@ -65,14 +65,11 @@ class Market(object):
 
     def get_promo_items(self, item, amount):
         """Calculate price of gift items."""
-        grouped = dict(self.grouped)
-        if item in grouped:
-            if grouped[item] < amount:
-                extra_amount = grouped[item]
-            else:
-                extra_amount = amount
-            return self.process_item((item, extra_amount))
-        return 0
+        if item in self.grouped:
+            if self.grouped[item]['amount'] > amount:
+                self.grouped[item]['amount'] -= amount
+                self.calculate_item(item)
+            del self.grouped[item]
 
     @staticmethod
     def get_price_index(amount, pricelist):
@@ -82,6 +79,7 @@ class Market(object):
     def calculate_price(self, amount, pricelist):
         """Calculate promotional prices."""
         idx = self.get_price_index(amount, pricelist)
+
         pricelist_extra_item = None
         pricelist_amount = pricelist[AMOUNTS][idx]
         if isinstance(pricelist[PRICES][idx], (tuple, list)):
@@ -100,15 +98,17 @@ class Market(object):
         if amount > 0:
             print(amount, pricelist)
             price += self.calculate_price(amount, pricelist)
+
         return price
 
-    def calculate_item(self, item, amount):
+    def calculate_item(self, item):
         """Calculate summary value for kind of item.
 
         :param item: item name
         :param amount: amount of item
         """
         pricelist = stock[item]
+        amount = self.grouped[item]['amount']
         self.grouped[item]['total_price'] = self.calculate_price(amount, pricelist)
 
     def checkout(self, skus):
@@ -129,11 +129,11 @@ class Market(object):
             for k, g in itertools.groupby(self.skus)
         ])
 
-        for item, data in self.grouped.items():
-            self.calculate_item(item, data['amount'])
+        for item in self.grouped.keys():
+            self.calculate_item(item)
 
-        # for pricelist_promo_item, promo_amount in self.pricelist_extra_items:
-        #     self.get_promo_items(pricelist_promo_item, promo_amount)
+        for pricelist_extra_item, amount in self.pricelist_extra_items:
+            self.get_promo_items(pricelist_extra_item, amount)
 
         return sum([item['total_price'] for item in self.grouped.values()])
 
@@ -142,5 +142,6 @@ def checkout(skus):
     """Get value for shopping."""
     market = Market()
     return market.checkout(skus)
+
 
 

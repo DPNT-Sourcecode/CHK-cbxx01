@@ -18,6 +18,8 @@ def test_checkout():
     # Some requests have failed (6/40). Here are some of them:
     #  - {"method":"checkout","params":["AAAAAAAA"],"id":"CHK_R2_020"}, expected: 330, got: 350
     assert checkout('AAAAAAAA') == 330
-
     #  - {"method":"checkout","params":["AAAAAAAAA"],"id":"CHK_R2_021"}, expected: 380, got: 400
+    assert checkout('AAAAAAAAA') == 380
     #  - {"method":"checkout","params":["ABCDEABCDE"],"id":"CHK_R2_038"}, expected: 280, got: 265
+    assert checkout('ABCDEABCDE') == 280
+
