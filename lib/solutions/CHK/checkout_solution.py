@@ -62,11 +62,12 @@ def checkout(skus):
 
     # groupped = [print(grp)
     for k, grp in itertools.groupby(skus):
-        print(k, grp)
+        print(grp.__dict__)
 
     # for items in groupped:
     #     value += calculate_items(items)
 
     # return value
+
 
 
