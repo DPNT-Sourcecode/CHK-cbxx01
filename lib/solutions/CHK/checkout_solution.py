@@ -40,6 +40,7 @@ EXTRA_ITEM = 1
 class Market(object):
     """Supermarket."""
 
+    grouped = None
     skus = None
 
     def __init__(self, skus):
@@ -60,6 +61,16 @@ class Market(object):
 
         return True
 
+    def get_promo_items(self, item, amount):
+        """Calculate price of gift items."""
+        grouped = dict(self.grouped)
+        if item in grouped:
+            if grouped[item] < amount:
+                extra_amount = grouped[item]
+            else:
+                extra_amount = amount
+        return self.calculate_items((item, extra_amount))
+
     def calculate_items(self, items):
         """Calculate summary value for kind of item.
 
@@ -69,6 +80,8 @@ class Market(object):
         item, amount = items
 
         pricelist = stock[item]
+        pricelist_promo_item = None
+
         price = pricelist[PRICES][0]
         promo_price = 0
 
@@ -85,8 +98,12 @@ class Market(object):
             promo_amount = int(amount / pricelist_promo_amount)
             amount = amount % pricelist_promo_amount
             promo_price = promo_amount * pricelist_promo_price
+        total_price = amount * price + promo_price
 
-        return amount * price + promo_price
+        if pricelist_promo_item:
+            total_price -= self.get_promo_items(pricelist_promo_item, promo_amount)
+
+        return total_price
 
     def checkout(self):
         """Supermarket checkout.
@@ -101,9 +118,9 @@ class Market(object):
         value = 0
         self.skus = sorted(self.skus)
 
-        grouped = [(k, sum(1 for _ in g)) for k, g in itertools.groupby(self.skus)]
+        self.grouped = [(k, sum(1 for _ in g)) for k, g in itertools.groupby(self.skus)]
 
-        for items in grouped:
+        for items in self.grouped:
             value += self.calculate_items(items)
 
         return value
@@ -113,4 +130,5 @@ def checkout(skus):
     """Get value for shopping."""
     market = Market(skus)
     return market.checkout()
+
 
