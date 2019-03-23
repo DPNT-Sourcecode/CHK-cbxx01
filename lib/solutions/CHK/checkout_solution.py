@@ -9,6 +9,7 @@ def checkout(skus):
     :returns: the total price of a number of items
     """
 
-    return
+    return skus
+
 
 
