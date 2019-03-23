@@ -8,4 +8,6 @@ def test_checkout():
     assert checkout('AB') == 80
     assert checkout(00) == -1
     assert checkout('xyz') == -1
+    assert False
+
 

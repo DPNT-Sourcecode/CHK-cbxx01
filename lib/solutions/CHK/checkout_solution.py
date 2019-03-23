@@ -42,6 +42,7 @@ def calculate_items(items):
     promo_price = 0
 
     if len(stock[item]) == 3:  # calculate special price
+        print(stock[item])
         promo_amount = int(amount / stock[item][PROMO_AMOUNT])
         amount = amount % stock[item][PROMO_AMOUNT]
         promo_price = promo_amount * stock[item][PROMO_PRICE]
@@ -68,3 +69,4 @@ def checkout(skus):
         value += calculate_items(items)
 
     return value
+
