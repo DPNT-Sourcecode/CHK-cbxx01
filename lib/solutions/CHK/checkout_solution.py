@@ -69,10 +69,11 @@ class Market(object):
 
     def get_promo_items(self, item, amount):
         """Calculate price of gift items."""
+        print(self.skus, item, amount)
         if item in self.grouped:
             if self.grouped[item]['amount'] > amount:
                 self.grouped[item]['amount'] -= amount
-                self.calculate_item(item)
+                self.calculate_item(item, extra=False)
             else:
                 del self.grouped[item]
 
@@ -81,13 +82,13 @@ class Market(object):
         """Return pricelist index for amount."""
         return len(list(filter((amount).__ge__, pricelist[AMOUNTS]))) - 1
 
-    def calculate_price(self, amount, pricelist):
+    def calculate_price(self, amount, pricelist, extra=True):
         """Calculate promotional prices."""
         idx = self.get_price_index(amount, pricelist)
 
         pricelist_extra_item = None
         pricelist_amount = pricelist[AMOUNTS][idx]
-        if isinstance(pricelist[PRICES][idx], (tuple, list)):
+        if extra and isinstance(pricelist[PRICES][idx], (tuple, list)):
             pricelist_price = pricelist[PRICES][idx][EXTRA_PRICE]
             pricelist_extra_item = pricelist[PRICES][idx][EXTRA_ITEM]
         else:
@@ -105,7 +106,7 @@ class Market(object):
 
         return price
 
-    def calculate_item(self, item):
+    def calculate_item(self, item, extra=True):
         """Calculate summary value for kind of item.
 
         :param item: item name
@@ -146,3 +147,4 @@ def checkout(skus):
     """Get value for shopping."""
     market = Market()
     return market.checkout(skus)
+
