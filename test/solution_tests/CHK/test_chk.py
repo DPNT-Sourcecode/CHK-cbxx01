@@ -1,19 +1,14 @@
 from solutions.CHK.checkout_solution import checkout
 
 
-# Result is: FAILED
-# Some requests have failed (4/141). Here are some of them:
-#  - {"method":"checkout","params":["Z"],"id":"CHK_R4_028"}, expected: 50, got: 30
 def test_checkout_Z():
-    assert checkout('Z') == 50
+    assert checkout('Z') == 21
 
 
-#  - {"method":"checkout","params":["ABCDEFGHIJKLMNOPQRSTUVWXYZ"],"id":"CHK_R4_033"}, expected: 965, got: 945
 def test_checkout_B():
     assert checkout('ABCDEFGHIJKLMNOPQRSTUVWXYZ') == 965
 
 
-#  - {"method":"checkout","params":["ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ"],"id":"CHK_R4_139"}, expected: 1880, got: 1840
 def test_checkout_B():
     assert checkout('ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ') == 1880
 
@@ -30,17 +25,11 @@ def test_checkout():
     assert checkout('D') == 15
     assert checkout('BEE') == 80
     assert checkout('EE') == 80
-
-    # Result is: FAILED
-    # Some requests have failed (6/40). Here are some of them:
-    #  - {"method":"checkout","params":["AAAAAAAA"],"id":"CHK_R2_020"}, expected: 330, got: 350
     assert checkout('AAAAAAAA') == 330
-    #  - {"method":"checkout","params":["AAAAAAAAA"],"id":"CHK_R2_021"}, expected: 380, got: 400
     assert checkout('AAAAAAAAA') == 380
 
 
 def test_checkout_ABCDEABCDE():
-    #  - {"method":"checkout","params":["ABCDEABCDE"],"id":"CHK_R2_038"}, expected: 280, got: 265
     assert checkout('ABCDEABCDE') == 280
 
 
@@ -74,6 +63,7 @@ def test_checkout_FFFFF():
 
 def test_checkout_UUUUUU():
     assert checkout('UUUUUU') == 200
+
 
 
 
