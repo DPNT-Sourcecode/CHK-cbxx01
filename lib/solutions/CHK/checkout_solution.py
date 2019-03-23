@@ -100,6 +100,7 @@ class Market(object):
 
             if amount > 0:
                 price += self.calculate_price(amount, pricelist)
+            print(price)
             return price
         return 0
 
@@ -143,5 +144,3 @@ def checkout(skus):
     """Get value for shopping."""
     market = Market()
     return market.checkout(skus)
-
-
