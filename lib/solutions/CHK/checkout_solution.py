@@ -141,5 +141,3 @@ def checkout(skus):
     """Get value for shopping."""
     market = Market()
     return market.checkout(skus)
-
-
