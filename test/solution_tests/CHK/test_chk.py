@@ -12,3 +12,5 @@ def test_checkout():
     assert checkout('C') == 20
     assert checkout('D') == 15
     assert checkout('BEE') == 80
+    assert checkout('EE') == 80
+

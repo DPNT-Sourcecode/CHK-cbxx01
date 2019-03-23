@@ -69,7 +69,8 @@ class Market(object):
                 extra_amount = grouped[item]
             else:
                 extra_amount = amount
-        return self.calculate_items((item, extra_amount))
+            return self.calculate_items((item, extra_amount))
+        return 0
 
     def calculate_items(self, items):
         """Calculate summary value for kind of item.
@@ -130,5 +131,6 @@ def checkout(skus):
     """Get value for shopping."""
     market = Market(skus)
     return market.checkout()
+
 
 
