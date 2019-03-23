@@ -30,8 +30,8 @@ stock = {
     ],
 }
 
-AMOUNT = 0
-PRICE = 2
+AMOUNTS = 0
+PRICES = 1
 
 EXTRA_PRICE = 0
 EXTRA_ITEM = 1
@@ -63,9 +63,9 @@ def calculate_items(items):
     amount, item = items
 
     pricelist = stock[item]
-    price = pricelist[PRICE][0]
+    price = pricelist[PRICES][0]
 
-    promo_amount = filter((amount).__le__, pricelist[0])
+    promo_amount = len(filter((amount).__ge__, pricelist[AMOUNTS]))
     promo_price = 0
 
     if len(pricelist[0]) == 3:  # calculate special price
@@ -95,5 +95,6 @@ def checkout(skus):
         value += calculate_items(items)
 
     return value
+
 
 
