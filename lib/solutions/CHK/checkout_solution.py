@@ -58,11 +58,13 @@ def checkout(skus):
     value = 0
     skus = sorted(skus)
 
-    groupped = [(k, sum(1 for _ in g)) for k, g in itertools.groupby(skus)]
-    for items in groupped:
+    grouped = [(k, sum(1 for _ in g)) for k, g in itertools.groupby(skus)]
+
+    for items in grouped:
         value += calculate_items(items)
 
     return value
+
 
 
 
