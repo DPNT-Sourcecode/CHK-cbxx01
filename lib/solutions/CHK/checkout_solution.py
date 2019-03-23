@@ -43,10 +43,10 @@ class Market(object):
     grouped = None
     pricelist_promo_items = None
     skus = None
+    total_price = 0
 
     def __init__(self, skus):
         """Set up."""
-        self.skus = skus
         self.pricelist_promo_items = []
 
     def check_skus(self):
@@ -97,14 +97,12 @@ class Market(object):
             return amount, promo_price
         return amount, 0
 
-    def calculate_items(self, items):
+    def calculate_items(self, item, amount):
         """Calculate summary value for kind of item.
 
-        :param items: string of same items
-        :returns: total value for item
+        :param item: item name
+        :returns: total amount for item
         """
-        item, amount = items
-
         pricelist = stock[item]
         price = pricelist[PRICES][0]
 
@@ -118,29 +116,29 @@ class Market(object):
 
         return total_price
 
-    def checkout(self):
+    def checkout(self, skus):
         """Supermarket checkout.
 
         :param skus: Stock Keeping Units
         :returns: the total price of a number of items
         """
+        self.skus = skus
 
         if not self.check_skus():
             return -1
 
-        value = 0
+        self.total_price = 0
         self.skus = sorted(self.skus)
+        self.grouped = dict([(k, sum(1 for _ in g)) for k, g in itertools.groupby(self.skus)])
 
-        self.grouped = [(k, sum(1 for _ in g)) for k, g in itertools.groupby(self.skus)]
+        for item, amount in self.grouped.items():
+            self.calculate_item(item, amount)
 
-        for items in self.grouped:
-            print(items)
-            value += self.calculate_items(items)
-
-        return value
+        return self.total_price
 
 
 def checkout(skus):
     """Get value for shopping."""
-    market = Market(skus)
-    return market.checkout()
+    market = Market()
+    return market.checkout(skus)
+
