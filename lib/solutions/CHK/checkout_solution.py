@@ -64,8 +64,9 @@ def checkout(skus):
     for k, grp in itertools.groupby(skus):
         print(k, grp)
 
-    for items in groupped:
-        value += calculate_items(items)
+    # for items in groupped:
+    #     value += calculate_items(items)
 
-    return value
+    # return value
+
 
