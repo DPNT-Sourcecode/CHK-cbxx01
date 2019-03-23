@@ -59,13 +59,13 @@ def calculate_items(items):
     :param items: string of same items
     :returns: total value for item
     """
-
-    amount, item = items
+    item, amount = items
 
     pricelist = stock[item]
     price = pricelist[PRICES][0]
+    promo_price = 0
 
-    idx = len(filter((amount).__ge__, pricelist[AMOUNTS])) - 1
+    idx = len(list(filter((amount).__ge__, pricelist[AMOUNTS]))) - 1
 
     if idx: # calculate special price
         pricelist_promo_amount = pricelist[AMOUNTS][idx]
@@ -97,6 +97,7 @@ def checkout(skus):
         value += calculate_items(items)
 
     return value
+
 
 
 
