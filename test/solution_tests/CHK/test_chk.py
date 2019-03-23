@@ -1,6 +1,23 @@
 from solutions.CHK.checkout_solution import checkout
 
 
+# Result is: FAILED
+# Some requests have failed (4/141). Here are some of them:
+#  - {"method":"checkout","params":["Z"],"id":"CHK_R4_028"}, expected: 50, got: 30
+def test_checkout_Z():
+    assert checkout('Z') == 50
+
+
+#  - {"method":"checkout","params":["ABCDEFGHIJKLMNOPQRSTUVWXYZ"],"id":"CHK_R4_033"}, expected: 965, got: 945
+def test_checkout_B():
+    assert checkout('ABCDEFGHIJKLMNOPQRSTUVWXYZ') == 965
+
+
+#  - {"method":"checkout","params":["ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ"],"id":"CHK_R4_139"}, expected: 1880, got: 1840
+def test_checkout_B():
+    assert checkout('ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ') == 1880
+
+
 def test_checkout():
     assert checkout('AAA') == 130
     assert checkout('AAAA') == 180
@@ -57,5 +74,6 @@ def test_checkout_FFFFF():
 
 def test_checkout_UUUUUU():
     assert checkout('UUUUUU') == 200
+
 
 
