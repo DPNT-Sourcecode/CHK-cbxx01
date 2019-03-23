@@ -104,7 +104,7 @@ class Market(object):
             amounts.append(self.grouped[item]['amount'])
             prices.append(STOCK[item][PRICES][0])
 
-        amount = sum(amounts)
+        list1, list2 = (list(t) for t in zip(*sorted(zip(prices, amounts))))
 
         # recalculate
 
@@ -141,4 +141,5 @@ def checkout(skus):
     """Get value for shopping."""
     market = Market()
     return market.checkout(skus)
+
 
