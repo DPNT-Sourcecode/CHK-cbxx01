@@ -2,6 +2,7 @@
 # skus = unicode string
 
 import itertools
+from .stock import STOCK
 
 AMOUNTS = 0
 PRICES = 1
@@ -31,7 +32,7 @@ class Market(object):
             return False
 
         for item in self.skus:
-            if item not in stock:
+            if item not in STOCK:
                 return False
 
         return True
@@ -81,8 +82,9 @@ class Market(object):
 
         :param item: item name
         :param amount: amount of item
+        :param extra: turn on/of extra examples counting
         """
-        pricelist = stock[item]
+        pricelist = STOCK[item]
         amount = self.grouped[item]['amount']
         self.grouped[item]['total_price'] = self.calculate_price(amount, pricelist, extra)
 
@@ -117,7 +119,3 @@ def checkout(skus):
     """Get value for shopping."""
     market = Market()
     return market.checkout(skus)
-
-
-
-

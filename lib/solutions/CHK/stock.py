@@ -1,6 +1,6 @@
 """Stock data."""
 
-stock = {
+STOCK = {
     # 'item': [
     #     (amount1, amount2, ...),
     #     (price1, (price2, extra), ...),

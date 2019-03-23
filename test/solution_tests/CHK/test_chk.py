@@ -53,4 +53,3 @@ def test_checkout_UUUU():
 
 def test_checkout_UUUUUU():
     assert checkout('UUUUUU') == 200
-
