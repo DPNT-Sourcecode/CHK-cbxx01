@@ -10,6 +10,3 @@ def test_checkout():
     assert checkout('xyz') == -1
     assert checkout('C') == 20
     assert checkout('D') == 15
-
-
-
