@@ -68,6 +68,7 @@ class Market(object):
         if item in self.grouped:
             if self.grouped[item]['amount'] > amount:
                 self.grouped[item]['amount'] -= amount
+                self.grouped[item]['total_price'] = 0
                 self.calculate_item(item)
             del self.grouped[item]
 
@@ -98,6 +99,8 @@ class Market(object):
         if amount > 0:
             print(amount, pricelist)
             price += self.calculate_price(amount, pricelist)
+
+        print(self.grouped)
 
         return price
 
@@ -142,3 +145,4 @@ def checkout(skus):
     """Get value for shopping."""
     market = Market()
     return market.checkout(skus)
+
