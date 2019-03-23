@@ -3,4 +3,9 @@
 # noinspection PyUnusedLocal
 # skus = unicode string
 def checkout(skus):
-    raise NotImplementedError()
+    """Supermarket checkout.
+
+    :param skus: Stock Keeping Units
+    :returns:
+    """
+
