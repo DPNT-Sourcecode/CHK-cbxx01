@@ -10,20 +10,38 @@ stock = {
     'D': (15),
 }
 
+PRICE = 0
+PROMO_AMOUNT = 1
+PROMO_PRICE = 2
 
 def check_input(skus):
     """Validate input.
 
     :returns: True for validated else False.
     """
+
     for item in skus:
         if item not in stock:
             return False
     return True
 
 
-def calculate_item(item):
-    """Calculate summary value for kind of item."""
+def calculate_items(items):
+    """Calculate summary value for kind of item.
+
+    :param items: string of same items
+    :returns: total value for item
+    """
+
+    item = items[0]
+    amount = len(item)
+    promo_amount = 0
+
+    if len(stock[item]) == 3:  # calculate special price
+        promo_amount = amount % stock[item][PROMO_AMOUNT]
+        promo_price = promo_amount * stock[item][PROMO_PRICE]
+
+    return (amount - promo_amount) * stock[item][PRICE] + promo_price
 
 
 def checkout(skus):
@@ -39,11 +57,12 @@ def checkout(skus):
     value = 0
     skus.sort()
 
-    [list(grp) for k, grp in groupby(
-    for item in skus:
-        value += calculate_item(item)
+    groupped = [list(grp) for k, grp in itertools.groupby(skus)]
+    for items in groupped:
+        value += calculate_item(items)
 
     return value
+
 
 
 
