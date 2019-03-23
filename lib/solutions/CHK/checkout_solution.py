@@ -101,10 +101,7 @@ class Market(object):
             self.pricelist_extra_items.append((pricelist_extra_item, calculated_amount))
 
         if amount > 0:
-            print(amount, pricelist)
             price += self.calculate_price(amount, pricelist)
-
-        print(self.grouped)
 
         return price
 
@@ -149,6 +146,7 @@ def checkout(skus):
     """Get value for shopping."""
     market = Market()
     return market.checkout(skus)
+
 
 
 
