@@ -93,20 +93,38 @@ class Market(object):
         """Apply group discount(s)."""
         # select products
         discount_amount = GROUP_DISCOUNT['amount']
+        discount_price = GROUP_DISCOUNT['price']
         in_discount_items = set(GROUP_DISCOUNT['items'])
         in_cart_items = self.grouped.keys()
-        to_discount_items = in_discount_items.intersection(in_cart_items)
+        to_discount_items = list(in_discount_items.intersection(in_cart_items))
 
-        # order by price desc
         amounts = []
         prices = []
         for item in to_discount_items:
             amounts.append(self.grouped[item]['amount'])
             prices.append(STOCK[item][PRICES][0])
 
-        list1, list2 = (list(t) for t in zip(*sorted(zip(prices, amounts))))
+        # order by price desc
+        prices, to_discount_items, amounts = (
+            list(t) for t in zip(*sorted(zip(prices, to_discount_items, amounts)))
+        )
+        total_amount = sum(amounts)
+        if total_amount >= discount_amount:
+            # recalculate
+            in_discount_amount = int(total_amount / discount_amount)
+            out_discount_amount = total_amount % discount_amount
+            in_discount_price = in_discount_amount * discount_price
 
-        # recalculate
+            # add discount entry
+            self.grouped['discount']['total_price'] = in_discount_price
+
+            # attach not discounted
+            for item in to_discount_items:
+                if out_discount_amount == 0:
+                    del self.grouped[item]
+                if self.grouped[item]['amount'] < out_discount_amount:
+                    out_discount_amount -= self.grouped[item]['amount']
+                    self.calculate_item(item)
 
     def checkout(self, skus):
         """Supermarket checkout.
@@ -141,3 +159,4 @@ def checkout(skus):
     """Get value for shopping."""
     market = Market()
     return market.checkout(skus)
+
