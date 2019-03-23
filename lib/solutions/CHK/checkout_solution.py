@@ -41,11 +41,13 @@ class Market(object):
     """Supermarket."""
 
     grouped = None
+    pricelist_promo_items = None
     skus = None
 
     def __init__(self, skus):
         """Set up."""
         self.skus = skus
+        self.pricelist_promo_items = []
 
     def check_skus(self):
         """Validate input.
@@ -72,23 +74,11 @@ class Market(object):
             return self.calculate_items((item, extra_amount))
         return 0
 
-    def calculate_items(self, items):
-        """Calculate summary value for kind of item.
-
-        :param items: string of same items
-        :returns: total value for item
-        """
-        item, amount = items
-
-        pricelist = stock[item]
-        pricelist_promo_item = None
-
-        price = pricelist[PRICES][0]
+    def get_promo_price(self, amount, pricelist):
+        """Calculate promotional prices."""
         promo_price = 0
-
         idx = len(list(filter((amount).__ge__, pricelist[AMOUNTS]))) - 1
-
-        if idx: # calculate special price
+        if idx:  # calculate special price
             pricelist_promo_amount = pricelist[AMOUNTS][idx]
             if isinstance(pricelist[PRICES][idx], (tuple, list)):
                 pricelist_promo_price = pricelist[PRICES][idx][EXTRA_PRICE]
@@ -99,10 +89,30 @@ class Market(object):
             promo_amount = int(amount / pricelist_promo_amount)
             amount = amount % pricelist_promo_amount
             promo_price = promo_amount * pricelist_promo_price
+
+            # return rest amount, promo price, promo extra items, extra items amount
+            self.pricelist_promo_items.append((pricelist_promo_item, promo_amount))
+            return amount, promo_price
+        return 0
+
+    def calculate_items(self, items):
+        """Calculate summary value for kind of item.
+
+        :param items: string of same items
+        :returns: total value for item
+        """
+        item, amount = items
+
+        pricelist = stock[item]
+        pricelist_promo_items = None
+        price = pricelist[PRICES][0]
+
+        amount, promo_price = self.get_promo_price(amount, pricelist)
         total_price = amount * price + promo_price
 
-        if pricelist_promo_item:
-            total_price -= self.get_promo_items(pricelist_promo_item, promo_amount)
+        if pricelist_promo_items:
+            for pricelist_promo_item, promo_amount in pricelist_promo_items:
+                total_price -= self.get_promo_items(pricelist_promo_item, promo_amount)
 
         return total_price
 
@@ -131,3 +141,4 @@ def checkout(skus):
     """Get value for shopping."""
     market = Market(skus)
     return market.checkout()
+
