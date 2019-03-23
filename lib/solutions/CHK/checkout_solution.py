@@ -77,6 +77,7 @@ class Market(object):
     def get_promo_price(self, amount, pricelist):
         """Calculate promotional prices."""
         promo_price = 0
+        pricelist_promo_item = None
         idx = len(list(filter((amount).__ge__, pricelist[AMOUNTS]))) - 1
         if idx:  # calculate special price
             pricelist_promo_amount = pricelist[AMOUNTS][idx]
@@ -91,9 +92,10 @@ class Market(object):
             promo_price = promo_amount * pricelist_promo_price
 
             # return rest amount, promo price, promo extra items, extra items amount
-            self.pricelist_promo_items.append((pricelist_promo_item, promo_amount))
+            if pricelist_promo_item:
+                self.pricelist_promo_items.append((pricelist_promo_item, promo_amount))
             return amount, promo_price
-        return 0
+        return amount, 0
 
     def calculate_items(self, items):
         """Calculate summary value for kind of item.
@@ -141,4 +143,5 @@ def checkout(skus):
     """Get value for shopping."""
     market = Market(skus)
     return market.checkout()
+
 
