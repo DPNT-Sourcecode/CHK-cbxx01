@@ -40,7 +40,6 @@ class Market(object):
 
     def get_promo_items(self, item, amount):
         """Calculate price of gift items."""
-        print(self.skus, item, amount)
         if item in self.grouped:
             if self.grouped[item]['amount'] > amount:
                 self.grouped[item]['amount'] -= amount
@@ -120,23 +119,16 @@ class Market(object):
                 self.grouped['discount'] = {
                     'total_price': in_discount_price,
                 }
-                print(self.grouped['discount'])
                 # attach not discounted
-                print(prices, to_discount_items, amounts)
                 for item in to_discount_items:
-                    print(out_discount_amount)
                     if out_discount_amount == 0:
-                        print('zero')
                         del self.grouped[item]
                     elif self.grouped[item]['amount'] <= out_discount_amount:
-                        print('le')
                         out_discount_amount -= self.grouped[item]['amount']
                     elif self.grouped[item]['amount'] > out_discount_amount:
-                        print('g')
-                        self.grouped[item]['amount'] -= out_discount_amount
+                        self.grouped[item]['amount'] = out_discount_amount
                         out_discount_amount = 0
                         self.calculate_item(item)
-        print(self.grouped)
 
     def checkout(self, skus):
         """Supermarket checkout.
@@ -171,5 +163,6 @@ def checkout(skus):
     """Get value for shopping."""
     market = Market()
     return market.checkout(skus)
+
 
 

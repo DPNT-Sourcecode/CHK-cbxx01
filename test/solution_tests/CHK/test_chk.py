@@ -1,6 +1,14 @@
 from solutions.CHK.checkout_solution import checkout
 
 
+def test_SSXZZ():
+    assert checkout('SSXZZ') == 82
+
+
+def test_SSXXXXXZ():
+    assert checkout('SSXXXXXZ') == 124
+
+
 def test_SSXXXXX():
     assert checkout('SSXXXXX') == 107
 
@@ -71,4 +79,5 @@ def test_checkout_FFFFF():
 
 def test_checkout_UUUUUU():
     assert checkout('UUUUUU') == 200
+
 
